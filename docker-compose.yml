@@ -1,0 +1,8 @@
+version: '3'
+
+services:
+  testmovieapi:
+    image: testmovieapi
+    build:
+      context: .
+      dockerfile: TestMovieAPI/Dockerfile
