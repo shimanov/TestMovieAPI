@@ -15,8 +15,10 @@ namespace TestMovieAPI
             Console.WriteLine("Введите имя фильма");
             string query = Console.ReadLine();
             Console.WriteLine("Вот что мы смогли найти:");
+            //Язык выдачи результата поиска
             const string lang = "ru";
-            const string key = "8885138dda6fdebc5b0e3dc327da6a91";
+            //APIKey
+            const string key = "";
 
             SearchMoviesAsync(key, query, lang).Wait();
 
