@@ -1,10 +1,8 @@
 ﻿using Newtonsoft.Json.Linq;
 using System;
-using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading.Tasks;
-using Newtonsoft.Json;
 
 namespace TestMovieAPI
 {
@@ -12,15 +10,23 @@ namespace TestMovieAPI
     {
         static void Main()
         {
-            Console.WriteLine("Введите имя фильма");
+            Console.WriteLine("Введите название фильма");
             string query = Console.ReadLine();
-            Console.WriteLine("Вот что мы смогли найти:");
-            //Язык выдачи результата поиска
-            const string lang = "ru";
-            //APIKey
-            const string key = "";
+            if (query != string.Empty)
+            {
+                Console.WriteLine("Вот что мы смогли найти:");
+                //Язык выдачи результата поиска
+                const string lang = "ru";
+                //APIKey
+                const string key = "8885138dda6fdebc5b0e3dc327da6a91";
 
-            SearchMoviesAsync(key, query, lang).Wait();
+                SearchMoviesAsync(key, query, lang).Wait();
+            }
+            else
+            {
+                Console.WriteLine("Название фильма не введено");
+            }
+            
 
             Console.ReadKey();
         }
