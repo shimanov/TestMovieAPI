@@ -10,11 +10,11 @@ namespace TestMovieAPI
     {
         static void Main()
         {
-            Console.WriteLine("Введите название фильма");
+            Console.WriteLine("Введите название фильма:");
             string query = Console.ReadLine();
             if (query != string.Empty)
             {
-                Console.WriteLine("Вот что мы смогли найти:");
+                Console.WriteLine("\nВот что мы смогли найти:\n");
                 //Язык выдачи результата поиска
                 const string lang = "ru";
                 //APIKey
@@ -26,13 +26,11 @@ namespace TestMovieAPI
             {
                 Console.WriteLine("Название фильма не введено");
             }
-            
-
             Console.ReadKey();
         }
 
         /// <summary>
-        /// 
+        /// Вывод результата поиска
         /// </summary>
         /// <param name="apiKey"></param>
         /// <param name="searchMovie"></param>
@@ -59,9 +57,16 @@ namespace TestMovieAPI
                 var title = JObject.Parse(a.ToString()).SelectToken("title");
                 var releaseDate = JObject.Parse(a.ToString()).SelectToken("release_date");
                 var overview = JObject.Parse(a.ToString()).SelectToken("overview");
+                var poster = JObject.Parse(a.ToString()).SelectToken("poster_path");
+                var backdrop = JObject.Parse(a.ToString()).SelectToken("backdrop_path");
 
-                Console.WriteLine($"ID: {id}\nTitle: {title}\nRelease date: {releaseDate}\nOverview: {overview}\n");
+                Console.WriteLine($"ID: {id}\nTitle: {title}\n" +
+                                  $"Release date: {releaseDate}\n" +
+                                  $"Overview: {overview}\n" +
+                                  $"Poster path: https://image.tmdb.org/t/p/w185/{poster}\n" +
+                                  $"Backdrop path: https://image.tmdb.org/t/p/w1280{backdrop}\n");
             }
+            
         }
     }
 }
