@@ -42,13 +42,13 @@ namespace TestMovieAPI
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var stringResult = client.GetStringAsync("https://api.themoviedb.org/3/search/movie?api_key="
+            var stringResultAsync = client.GetStringAsync("https://api.themoviedb.org/3/search/movie?api_key="
                                                      + apiKey
                                                      + "&language="
                                                      + lang
                                                      + "&query="
-                                                     + searchMovie);
-            var resultTask = await stringResult;
+                                                     + searchMovie).ConfigureAwait(false);
+            var resultTask = await stringResultAsync;
 
             var array = JArray.Parse(JObject.Parse(resultTask).SelectToken("results").ToString());
             foreach (var a in array)
@@ -60,11 +60,7 @@ namespace TestMovieAPI
                 var poster = JObject.Parse(a.ToString()).SelectToken("poster_path");
                 var backdrop = JObject.Parse(a.ToString()).SelectToken("backdrop_path");
 
-                Console.WriteLine($"ID: {id}\nTitle: {title}\n" +
-                                  $"Release date: {releaseDate}\n" +
-                                  $"Overview: {overview}\n" +
-                                  $"Poster path: https://image.tmdb.org/t/p/w185/{poster}\n" +
-                                  $"Backdrop path: https://image.tmdb.org/t/p/w1280{backdrop}\n");
+                Console.WriteLine($"ID: {id}\nTitle: {title}\nRelease date: {releaseDate}\nOverview: {overview}\nPoster path: https://image.tmdb.org/t/p/w185/{poster}\nBackdrop path: https://image.tmdb.org/t/p/w1280{backdrop}\n");
             }
             
         }
