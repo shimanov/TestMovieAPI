@@ -18,7 +18,7 @@ namespace TestMovieAPI
                 //Язык выдачи результата поиска
                 const string lang = "ru";
                 //APIKey
-                const string key = "8885138dda6fdebc5b0e3dc327da6a91";
+                const string key = "";
 
                 SearchMoviesAsync(key, query, lang).Wait();
             }
