@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json.Linq;
+﻿using Newtonsoft.Json;
 using System;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -18,7 +18,7 @@ namespace TestMovieAPI
                 //Язык выдачи результата поиска
                 const string lang = "ru";
                 //APIKey
-                const string key = "";
+                const string key = "8885138dda6fdebc5b0e3dc327da6a91";
 
                 SearchMoviesAsync(key, query, lang).Wait();
             }
@@ -32,9 +32,9 @@ namespace TestMovieAPI
         /// <summary>
         /// Вывод результата поиска
         /// </summary>
-        /// <param name="apiKey"></param>
-        /// <param name="searchMovie"></param>
-        /// <param name="lang"></param>
+        /// <param name="apiKey">ApikKey для доступа</param>
+        /// <param name="searchMovie">Ключевое слово для поиска</param>
+        /// <param name="lang">Язык выдачи результата</param>
         /// <returns></returns>
         private static async Task SearchMoviesAsync(string apiKey,
             string searchMovie, string lang)
@@ -42,27 +42,20 @@ namespace TestMovieAPI
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var stringResultAsync = client.GetStringAsync("https://api.themoviedb.org/3/search/movie?api_key="
-                                                     + apiKey
-                                                     + "&language="
-                                                     + lang
-                                                     + "&query="
-                                                     + searchMovie).ConfigureAwait(false);
-            var resultTask = await stringResultAsync;
+            var stringResultAsync = await client.GetStringAsync($"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&language={lang}&query={searchMovie}");
 
-            var array = JArray.Parse(JObject.Parse(resultTask).SelectToken("results").ToString());
-            foreach (var a in array)
+            Rootobject rootobject = JsonConvert.DeserializeObject<Rootobject>(stringResultAsync);
+            if (rootobject.Total_results == 0)
             {
-                var id = JObject.Parse(a.ToString()).SelectToken("id");
-                var title = JObject.Parse(a.ToString()).SelectToken("title");
-                var releaseDate = JObject.Parse(a.ToString()).SelectToken("release_date");
-                var overview = JObject.Parse(a.ToString()).SelectToken("overview");
-                var poster = JObject.Parse(a.ToString()).SelectToken("poster_path");
-                var backdrop = JObject.Parse(a.ToString()).SelectToken("backdrop_path");
-
-                Console.WriteLine($"ID: {id}\nTitle: {title}\nRelease date: {releaseDate}\nOverview: {overview}\nPoster path: https://image.tmdb.org/t/p/w185/{poster}\nBackdrop path: https://image.tmdb.org/t/p/w1280{backdrop}\n");
+                Console.WriteLine("По вашему запросу ничего не найдено");
             }
-            
+            else
+            {
+                foreach (var movie in rootobject.Results)
+                {
+                    Console.WriteLine($"ID: {movie.Id}\nTitle: {movie.Title}\nRelease date: {movie.Release_date}\nOverview: {movie.Overview}\n");
+                }
+            }
         }
     }
 }
