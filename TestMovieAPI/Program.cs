@@ -45,7 +45,7 @@ namespace TestMovieAPI
             var stringResultAsync = await client.GetStringAsync($"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&language={lang}&query={searchMovie}");
 
             Rootobject rootobject = JsonConvert.DeserializeObject<Rootobject>(stringResultAsync);
-            if (rootobject.Total_results == 0)
+            if (rootobject.TotalResults == 0)
             {
                 Console.WriteLine("По вашему запросу ничего не найдено");
             }
@@ -53,7 +53,7 @@ namespace TestMovieAPI
             {
                 foreach (var movie in rootobject.Results)
                 {
-                    Console.WriteLine($"ID: {movie.Id}\nTitle: {movie.Title}\nRelease date: {movie.Release_date}\nOverview: {movie.Overview}\n");
+                    Console.WriteLine($"ID: {movie.Id}\nTitle: {movie.Title}\nRelease date: {movie.ReleaseDate}\nOverview: {movie.Overview}\n");
                 }
             }
         }

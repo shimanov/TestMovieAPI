@@ -3,26 +3,26 @@
     public class Rootobject
     {
         public int Page { get; set; }
-        public int Total_results { get; set; }
-        public int Total_pages { get; set; }
+        public int TotalResults { get; set; }
+        public int TotalPages { get; set; }
         public Result[] Results { get; set; }
     }
 
     public class Result
     {
-        public int Vote_count { get; set; }
+        public int VoteCount { get; set; }
         public int Id { get; set; }
         public bool Video { get; set; }
-        public float Vote_average { get; set; }
+        public float VoteAverage { get; set; }
         public string Title { get; set; }
         public float Popularity { get; set; }
-        public string Poster_path { get; set; }
-        public string Original_language { get; set; }
-        public string Original_title { get; set; }
-        public int[] Genre_ids { get; set; }
-        public string Backdrop_path { get; set; }
+        public string PosterPath { get; set; }
+        public string OriginalLanguage { get; set; }
+        public string OriginalTitle { get; set; }
+        public int[] GenreIds { get; set; }
+        public string BackdropPath { get; set; }
         public bool Adult { get; set; }
         public string Overview { get; set; }
-        public string Release_date { get; set; }
+        public string ReleaseDate { get; set; }
     }
 }
