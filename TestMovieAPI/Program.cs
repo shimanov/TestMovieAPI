@@ -42,7 +42,7 @@ namespace TestMovieAPI
             var client = new HttpClient();
             client.DefaultRequestHeaders.Accept.Clear();
             client.DefaultRequestHeaders.Accept.Add(new MediaTypeWithQualityHeaderValue("application/json"));
-            var stringResultAsync = await client.GetStringAsync($"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&language={lang}&query={searchMovie}");
+            var stringResultAsync = await client.GetStringAsync($"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&language={lang}&query={searchMovie}").ConfigureAwait(false);
 
             Rootobject rootobject = JsonConvert.DeserializeObject<Rootobject>(stringResultAsync);
             if (rootobject.TotalResults == 0)
