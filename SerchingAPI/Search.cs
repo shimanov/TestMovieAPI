@@ -1,5 +1,8 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using SerchingAPI.Model;
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -7,32 +10,26 @@ namespace SerchingAPI
 {
     public class Search
     {
-        private string apiKey;
-        public string ApiKey
+        public static async Task SearchMoviesAsync(string apiKey, string lang, string query)
         {
-            set
+            var client = new HttpClient();
+            client.DefaultRequestHeaders.Accept.Clear();
+            client.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/json"));
+            var resultMovieAsync = await client.GetStringAsync($"https://api.themoviedb.org/3/search/movie?api_key={apiKey}&language={lang}&query={query}")
+                .ConfigureAwait(false);
+
+            MovieRoot movieRoot = JsonConvert.DeserializeObject<MovieRoot>(resultMovieAsync);
+            if (movieRoot.TotalResults == 0)
             {
-                if (value != string.Empty)
+                Console.WriteLine("По вашему запросу ничего не найдено");
+            }
+            else
+            {
+                foreach (var movie in movieRoot.MovieResults)
                 {
-                    throw new ArgumentException("");
-                }
-                else
-                {
-                    apiKey = value;
+                    Console.WriteLine($"ID: {movie.Id}\nTitle: {movie.Title}\nRelease date: {movie.ReleaseDate}\nOverview: {movie.Overview}\n");
                 }
             }
-            get
-            {
-                { return apiKey;  }
-            }
-        }
-
-        public string lang;
-        public string query;
-
-        private static async Task SearchMoviesAsync()
-        {
-
         }
     }
 }
